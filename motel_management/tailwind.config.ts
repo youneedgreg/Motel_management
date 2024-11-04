@@ -11,12 +11,9 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        border: "var(--border)", // Ensure this color variable exists
       },
     },
   },
-  plugins: [
-    require("@tailwindcss/typography"), // Optional, for typography styles
-    require("@tailwindcss/forms"), // Optional, for form element styles
-  ],
 };
 export default config;

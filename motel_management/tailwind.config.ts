@@ -14,6 +14,9 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require("@tailwindcss/typography"), // Optional, for typography styles
+    require("@tailwindcss/forms"), // Optional, for form element styles
+  ],
 };
 export default config;

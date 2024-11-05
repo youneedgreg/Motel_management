@@ -1,7 +1,7 @@
 :root {
-  --background: #ffffff;
-  --foreground: #000000;
-  --border: #e5e7eb; /* Define the border color here */
+  --background: #000000;
+  --foreground: #ffffff;
+  --border: #fcff5f; /* Define the border color here */
 }
 @tailwind base;
 @tailwind components;

@@ -34,3 +34,28 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+
+add guest as you book a room
+
+Guest full name
+guest telephone no
+guest email
+guest id no or passport
+guest payment method
+guest room no`
+amount
+mode of payment
+transaction or reciept no
+
+
+
+
+
+
+
+
+
+
+guest list

@@ -4,7 +4,8 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { FiLogOut } from 'react-icons/fi';
-import RoomAvailability from '../../components/Roomavailability';
+import RoomAvailability from '../../components/RoomAvailability';
+import AddGuest from '@/components/AddGuest';
 
 const WelcomePage: React.FC = () => {
   const router = useRouter();
@@ -26,12 +27,9 @@ const WelcomePage: React.FC = () => {
       </div>
       <div className="mt-4">
         <RoomAvailability />
+        <AddGuest/>
       </div>
       <div className="flex flex-col items-center justify-center flex-grow">
-        <div className="max-w-md w-full text-center">
-          <h1 className="text-3xl font-bold mb-4">Welcome!</h1>
-          <p>You have successfully logged in.</p>
-        </div>
       </div>
     </div>
   );

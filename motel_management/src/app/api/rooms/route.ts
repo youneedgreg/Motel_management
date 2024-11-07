@@ -6,6 +6,7 @@ export async function GET() {
   try {
     const rooms = await prisma.room.findMany({
       select: {
+        id: true,
         number: true,
         status: true,
       },

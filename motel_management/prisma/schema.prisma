@@ -23,4 +23,24 @@ model Room {
   id     String  @id @default(auto()) @map("_id") @db.ObjectId
   number Int     @unique
   status String
+
+  Guest Guest[]
+}
+
+model Guest {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  fullName             String
+  telephoneNo          String
+  email                String   @unique
+  idOrPassportNo       String
+  paymentMethod        String
+  room                 Room     @relation(fields: [roomId], references: [id])
+  roomId               String   @db.ObjectId
+  paymentAmount        Float
+  modeOfPayment        String
+  transactionOrReceipt String
+  checkIn              DateTime
+  checkOut             DateTime
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 }

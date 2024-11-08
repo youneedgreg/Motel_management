@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
@@ -27,36 +27,43 @@ const BookedGuestList = () => {
   // Format date to a readable format
   const formatDate = (date: string) => format(new Date(date), "MMM dd, yyyy");
 
-  // Function to check in a guest and update room status
-  const checkInGuest = async (guestId: string, roomId: string) => {
-    try {
-      // Update the guest and room status in the backend
-      const response = await fetch(`/api/guest/check-in/${guestId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          guestStatus: "checked-in",
-          roomStatus: "occupied",
-          roomId: roomId,
-        }),
-      });
+  // Function to check in a guest using only guestId
+const checkInGuest = async (guestId: string) => {
+  try {
+    const response = await fetch(`/api/guest/check-in`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ guestId }),
+    });
 
-      if (response.ok) {
-        // Update the status locally after a successful check-in
-        setGuests(prevGuests =>
-          prevGuests.map(guest =>
-            guest.id === guestId ? { ...guest, status: "checked-in" } : guest
-          )
-        );
-      } else {
-        console.error("Failed to update guest and room status.");
-      }
-    } catch (error) {
-      console.error("Error checking in guest:", error);
+    // Check for non-JSON response
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Server responded with an error:", errorText);
+      alert("Failed to check in guest. Please try again.");
+      return;
     }
-  };
+
+    // Process JSON response
+    const result = await response.json();
+    if (result.error) {
+      alert(result.error);
+    } else {
+      setGuests(prevGuests =>
+        prevGuests.map(guest =>
+          guest.id === guestId ? { ...guest, status: "checked-in" } : guest
+        )
+      );
+      alert(result.message);
+    }
+  } catch (error) {
+    console.error("Error checking in guest:", error);
+    alert("An error occurred while checking in the guest.");
+  }
+};
+
 
   return (
     <div className="container mx-auto p-5">
@@ -95,7 +102,10 @@ const BookedGuestList = () => {
                   {guest.status === "booked" && (
                     <button
                       className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-                      onClick={() => checkInGuest(guest.id, guest.roomId)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        checkInGuest(guest.id);
+                      }}
                     >
                       Check In
                     </button>

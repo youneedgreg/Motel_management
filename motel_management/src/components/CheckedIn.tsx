@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 
-// GuestList Component
+// CheckedInGuestList Component
 const CheckedInGuestList = () => {
   const [guests, setGuests] = useState<any[]>([]);
   const [selectedGuest, setSelectedGuest] = useState<any | null>(null);
@@ -26,11 +26,48 @@ const CheckedInGuestList = () => {
   const formatDate = (date: string) => format(new Date(date), "MMM dd, yyyy");
 
   // Filter guests to show only those with status "checked-in"
-  const checkedInGuests = guests.filter(guest => guest.status === "checked-in");
+  const checkedInGuests = guests.filter((guest) => guest.status === "checked-in");
+
+  // Function to check out a guest using only guestId
+  const checkOutGuest = async (guestId: string) => {
+    try {
+      const response = await fetch(`/api/guest/check-out`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ guestId }),
+      });
+
+      // Check for non-JSON response
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Server responded with an error:", errorText);
+        alert("Failed to check out guest. Please try again.");
+        return;
+      }
+
+      // Process JSON response
+      const result = await response.json();
+      if (result.error) {
+        alert(result.error);
+      } else {
+        setGuests((prevGuests) =>
+          prevGuests.map((guest) =>
+            guest.id === guestId ? { ...guest, status: "checked-out" } : guest
+          )
+        );
+        alert(result.message);
+      }
+    } catch (error) {
+      console.error("Error checking out guest:", error);
+      alert("An error occurred while checking out the guest.");
+    }
+  };
 
   return (
     <div className="container mx-auto p-5">
-      <h2 className="text-3xl font-semibold mb-5">Guest List</h2>
+      <h2 className="text-3xl font-semibold mb-5">Checked-in Guest List</h2>
 
       {/* Table */}
       <div className="overflow-x-auto shadow-md rounded-lg">
@@ -44,6 +81,7 @@ const CheckedInGuestList = () => {
               <th className="px-4 py-2 text-left">Check-in</th>
               <th className="px-4 py-2 text-left">Check-out</th>
               <th className="px-4 py-2 text-left">Status</th>
+              <th className="px-4 py-2 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -60,6 +98,19 @@ const CheckedInGuestList = () => {
                 <td className="px-4 py-2">{formatDate(guest.checkIn)}</td>
                 <td className="px-4 py-2">{formatDate(guest.checkOut)}</td>
                 <td className="px-4 py-2">{guest.status}</td>
+                <td className="px-4 py-2">
+                  {guest.status === "checked-in" && (
+                    <button
+                      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        checkOutGuest(guest.id);
+                      }}
+                    >
+                      Check Out
+                    </button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -78,9 +129,6 @@ const CheckedInGuestList = () => {
             <div><strong>Telephone:</strong> {selectedGuest.telephoneNo}</div>
             <div><strong>Check-in:</strong> {formatDate(selectedGuest.checkIn)}</div>
             <div><strong>Check-out:</strong> {formatDate(selectedGuest.checkOut)}</div>
-            <div><strong>Payment Amount:</strong> {selectedGuest.paymentAmount}</div>
-            <div><strong>Mode of Payment:</strong> {selectedGuest.modeOfPayment}</div>
-            <div><strong>Transaction/Receipt:</strong> {selectedGuest.transactionOrReceipt}</div>
             <div><strong>Status:</strong> {selectedGuest.status}</div>
           </div>
           <button

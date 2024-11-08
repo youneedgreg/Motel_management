@@ -7,7 +7,6 @@ import WelcomePage from "./welcome/page";
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Function to handle setting login state
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
   };

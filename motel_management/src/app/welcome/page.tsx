@@ -1,6 +1,5 @@
 "use client"
 
-
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { FiLogOut } from 'react-icons/fi';
@@ -17,14 +16,23 @@ const WelcomePage: React.FC = () => {
   const handleLogout = () => {
     // Perform logout actions, such as clearing session or token
     // Example: localStorage.removeItem('token');
-
-    // Redirect to the login page
     router.push('/');
+  };
+
+  const goToReports = () => {
+    // Navigate to the reports page
+    router.push('/reports');
   };
 
   return (
     <div className="min-h-screen bg-gray-800 text-white flex flex-col p-4">
-      <div className="flex justify-end">
+      <div className="flex justify-end space-x-4">
+        <button
+          onClick={goToReports}
+          className="text-white p-2 hover:text-blue-500"
+        >
+          Reports
+        </button>
         <button onClick={handleLogout} className="text-white p-2 hover:text-red-500">
           <FiLogOut size={24} title="Logout" />
         </button>
@@ -36,7 +44,6 @@ const WelcomePage: React.FC = () => {
         <BookedGuestList/>
         <CheckedInGuestList/>
         <CheckedOutGuestList/>
-
       </div>
       <div className="flex flex-col items-center justify-center flex-grow">
       </div>

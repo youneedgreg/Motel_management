@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 
@@ -25,6 +27,37 @@ const BookedGuestList = () => {
   // Format date to a readable format
   const formatDate = (date: string) => format(new Date(date), "MMM dd, yyyy");
 
+  // Function to check in a guest and update room status
+  const checkInGuest = async (guestId: string, roomId: string) => {
+    try {
+      // Update the guest and room status in the backend
+      const response = await fetch(`/api/guest/check-in/${guestId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          guestStatus: "checked-in",
+          roomStatus: "occupied",
+          roomId: roomId,
+        }),
+      });
+
+      if (response.ok) {
+        // Update the status locally after a successful check-in
+        setGuests(prevGuests =>
+          prevGuests.map(guest =>
+            guest.id === guestId ? { ...guest, status: "checked-in" } : guest
+          )
+        );
+      } else {
+        console.error("Failed to update guest and room status.");
+      }
+    } catch (error) {
+      console.error("Error checking in guest:", error);
+    }
+  };
+
   return (
     <div className="container mx-auto p-5">
       <h2 className="text-3xl font-semibold mb-5">Booked Guest List</h2>
@@ -41,13 +74,14 @@ const BookedGuestList = () => {
               <th className="px-4 py-2 text-left">Check-in</th>
               <th className="px-4 py-2 text-left">Check-out</th>
               <th className="px-4 py-2 text-left">Status</th>
+              <th className="px-4 py-2 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
             {guests.map((guest, index) => (
               <tr
                 key={guest.id}
-                className="cursor-pointer hover:bg-gray-50 transition-all"
+                className="hover:bg-gray-50 transition-all"
                 onClick={() => setSelectedGuest(guest)}
               >
                 <td className="px-4 py-2">{index + 1}</td>
@@ -57,6 +91,16 @@ const BookedGuestList = () => {
                 <td className="px-4 py-2">{formatDate(guest.checkIn)}</td>
                 <td className="px-4 py-2">{formatDate(guest.checkOut)}</td>
                 <td className="px-4 py-2">{guest.status}</td>
+                <td className="px-4 py-2">
+                  {guest.status === "booked" && (
+                    <button
+                      className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                      onClick={() => checkInGuest(guest.id, guest.roomId)}
+                    >
+                      Check In
+                    </button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -75,13 +119,10 @@ const BookedGuestList = () => {
             <div><strong>Telephone:</strong> {selectedGuest.telephoneNo}</div>
             <div><strong>Check-in:</strong> {formatDate(selectedGuest.checkIn)}</div>
             <div><strong>Check-out:</strong> {formatDate(selectedGuest.checkOut)}</div>
-            <div><strong>Payment Amount:</strong> {selectedGuest.paymentAmount}</div>
-            <div><strong>Mode of Payment:</strong> {selectedGuest.modeOfPayment}</div>
-            <div><strong>Transaction/Receipt:</strong> {selectedGuest.transactionOrReceipt}</div>
             <div><strong>Status:</strong> {selectedGuest.status}</div>
           </div>
           <button
-            className="mt-4 py-2 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 border-2 border-yellow p-4"
+            className="mt-4 py-2 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 border-2 border-yellow"
             onClick={() => setSelectedGuest(null)}
           >
             Close

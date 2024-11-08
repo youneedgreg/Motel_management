@@ -7,6 +7,9 @@ import { FiLogOut } from 'react-icons/fi';
 import RoomAvailability from '../../components/RoomAvailability';
 import AddGuest from '@/components/AddGuest';
 import GuestList from '@/components/GuestList';
+import BookedGuestList from '@/components/BookedGuest';
+import CheckedInGuestList from '@/components/CheckedIn';
+import CheckedOutGuestList from '@/components/CheckedOut';
 
 const WelcomePage: React.FC = () => {
   const router = useRouter();
@@ -30,6 +33,9 @@ const WelcomePage: React.FC = () => {
         <RoomAvailability />
         <AddGuest/>
         <GuestList/>
+        <BookedGuestList/>
+        <CheckedInGuestList/>
+        <CheckedOutGuestList/>
 
       </div>
       <div className="flex flex-col items-center justify-center flex-grow">

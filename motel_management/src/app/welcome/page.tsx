@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { FiLogOut } from 'react-icons/fi';
 import RoomAvailability from '../../components/RoomAvailability';
 import AddGuest from '@/components/AddGuest';
+import GuestList from '@/components/GuestList';
 
 const WelcomePage: React.FC = () => {
   const router = useRouter();
@@ -28,6 +29,8 @@ const WelcomePage: React.FC = () => {
       <div className="mt-4">
         <RoomAvailability />
         <AddGuest/>
+        <GuestList/>
+
       </div>
       <div className="flex flex-col items-center justify-center flex-grow">
       </div>

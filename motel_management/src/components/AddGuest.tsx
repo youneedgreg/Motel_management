@@ -52,13 +52,14 @@ const AddGuest = () => {
       transactionOrReceipt: form.transactionOrReceipt.value,
       checkIn: form.checkIn.value,
       checkOut: form.checkOut.value,
+      status: form.status.value, // Submit the status value
     };
 
     // Basic validation
     if (!formData.fullName || !formData.telephoneNo || !formData.email || 
         !formData.idOrPassportNo || !formData.paymentMethod || 
         !formData.roomId || !formData.paymentAmount || !formData.modeOfPayment || !formData.transactionOrReceipt ||
-        !formData.checkIn || !formData.checkOut) {
+        !formData.checkIn || !formData.checkOut || !formData.status) {
       setErrorMessage('All fields are required');
       setIsError(true);
       setIsLoading(false);
@@ -181,6 +182,16 @@ const AddGuest = () => {
                 <div className="space-y-2">
                   <Label htmlFor="checkOut">Check-Out Date</Label>
                   <Input id="checkOut" name="checkOut" type="date" className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded" />
+                </div>
+
+                {/* Status Dropdown */}
+                <div className="space-y-2">
+                  <Label htmlFor="status">Status</Label>
+                  <select id="status" name="status" className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded">
+                    <option value="booked">Booked</option>
+                    <option value="on-site">On-Site</option>
+                    <option value="check-out">Check-Out</option>
+                  </select>
                 </div>
 
                 <Button type="submit" className="w-full border border-white text-white hover:bg-white hover:text-gray-800 transition-colors duration-200" disabled={isLoading}>

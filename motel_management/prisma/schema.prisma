@@ -24,7 +24,7 @@ model Room {
   number Int     @unique
   status String
 
-  Guest Guest[]
+  Guest Guest[]  
 }
 
 model Guest {
@@ -41,6 +41,7 @@ model Guest {
   transactionOrReceipt String
   checkIn              DateTime
   checkOut             DateTime
+  status               String   @default("booked")  // Set default to 'booked'
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
 }

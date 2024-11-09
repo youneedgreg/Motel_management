@@ -40,9 +40,9 @@ const WelcomePage: React.FC = () => {
       <div className="mt-4">
         <RoomAvailability />
         <AddGuest/>
-        <GuestList/>
         <BookedGuestList/>
         <CheckedInGuestList/>
+        <GuestList/>
         <CheckedOutGuestList/>
       </div>
       <div className="flex flex-col items-center justify-center flex-grow">

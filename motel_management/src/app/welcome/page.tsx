@@ -9,13 +9,14 @@ import GuestList from '@/components/GuestList';
 import BookedGuestList from '@/components/BookedGuest';
 import CheckedInGuestList from '@/components/CheckedIn';
 import CheckedOutGuestList from '@/components/CheckedOut';
+import withAuth from '@/hooks/withauth';
 
 const WelcomePage: React.FC = () => {
   const router = useRouter();
 
   const handleLogout = () => {
     // Perform logout actions, such as clearing session or token
-    // Example: localStorage.removeItem('token');
+    localStorage.removeItem('authToken');
     router.push('/');
   };
 
@@ -51,4 +52,4 @@ const WelcomePage: React.FC = () => {
   );
 };
 
-export default WelcomePage;
+export default withAuth(WelcomePage);

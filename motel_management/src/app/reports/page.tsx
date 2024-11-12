@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useReactToPrint } from 'react-to-print';
+import withAuth from '@/hooks/withauth';
 
 const ReportPage: React.FC = () => {
   const [reportData, setReportData] = useState<any>(null);
@@ -95,4 +96,4 @@ const ReportPage: React.FC = () => {
   );
 };
 
-export default ReportPage;
+export default withAuth(ReportPage);

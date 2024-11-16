@@ -174,13 +174,45 @@ const AuthPage = () => {
                 </form>
               </TabsContent>
               
+              
               <TabsContent value="signup">
-                <form onSubmit={handleSignup}>
-                  <div className="space-y-4">
-                    {/* Signup fields here */}
-                  </div>
-                </form>
-              </TabsContent>
+  <form onSubmit={handleSignup}>
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="name">Name</Label>
+        <Input id="name" name="name" type="text" placeholder="Enter your full name" required />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="empId">Employee ID</Label>
+        <Input id="empId" name="empId" type="text" placeholder="Enter your 6-digit ID" maxLength={6} pattern="\d{6}" required />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input id="email" name="email" type="email" placeholder="Enter your email" required />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="phone">Phone Number</Label>
+        <Input id="phone" name="phone" type="tel" placeholder="Enter your phone number" required />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="address">Address</Label>
+        <Input id="address" name="address" type="text" placeholder="Enter your address" required />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="password">Password</Label>
+        <Input id="password" name="password" type="password" placeholder="Enter a strong password" required />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="adminPassword">Admin Password</Label>
+        <Input id="adminPassword" name="adminPassword" type="password" placeholder="Enter the admin password" required />
+      </div>
+      <Button type="submit" className="w-full border border-white text-white hover:bg-white hover:text-gray-800 transition-colors duration-200" disabled={isLoading}>
+        {isLoading ? 'Loading...' : 'Sign Up'}
+      </Button>
+    </div>
+  </form>
+</TabsContent>
+
             </Tabs>
             
             {isError && (

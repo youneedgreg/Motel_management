@@ -56,6 +56,24 @@ const ReportPage: React.FC = () => {
       <div id="report-section" ref={reportRef} className="bg-gray-100 p-4 rounded-md">
         {reportData ? (
           <div>
+            <div className="flex items-center mb-6">
+            <img
+  src="https://sevendaysinn.co.ke/wp-content/uploads/2024/10/7di-2-180x78.png"
+  alt="Logo"
+  className="w-40 h-20 mr-4"
+  style={{ backgroundColor: 'gray' }}
+/>
+
+
+
+          <div>
+            <p className="text-lg font-bold">Seven Days Holiday Inn</p>
+            <p className="text-sm">Langata, Quincy Mall Area Near Langata Women's Prison</p>
+            <p className="text-sm">P.O Box 22908 – 00505 Nairobi</p>
+            <p className="text-sm">Phone: +254 759 888 555</p>
+            <p className="text-sm">Email: reservations@sevendaysinn.co.ke</p>
+          </div>
+        </div>
             <h2 className="text-xl font-semibold mb-4">
               Period: {period.charAt(0).toUpperCase() + period.slice(1)}
             </h2>

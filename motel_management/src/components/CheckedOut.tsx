@@ -30,7 +30,7 @@ const CheckedOutGuestList = () => {
 
   return (
     <div className="container mx-auto p-5">
-      <h2 className="text-3xl font-semibold mb-5">Guest List</h2>
+      <h2 className="text-3xl font-semibold mb-5">Checked-out Guest List</h2>
 
       {/* Table */}
       <div className="overflow-x-auto shadow-md rounded-lg">

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title: "7 days inn",
   description: "Where Comfort Meets Convenience in Every Stay!",
   icons: {
-    icon: "/favicon.ico", // Points to your favicon in the public directory
+    icon: "../app/favicon.ico",
   },
 };
 

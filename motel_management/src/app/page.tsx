@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
+import Image from 'next/image';
 
 const AuthPage = () => {
   const [isError, setIsError] = useState(false);
@@ -136,11 +137,15 @@ const AuthPage = () => {
     <div className="min-h-screen bg-gray-800 text-white flex items-center justify-center p-4">
       <div className="max-w-md w-full">
         <div className="mb-6">
-          <img
-            src="https://sevendaysinn.co.ke/wp-content/uploads/2024/10/7di-2-180x78.png"
-            alt="Company Logo"
-            className="h-12 w-auto"
-          />
+        <Image
+  src="https://sevendaysinn.co.ke/wp-content/uploads/2024/10/7di-2-180x78.png"
+  alt="Company Logo"
+  width={180}
+  height={78}
+  layout="responsive"
+/>
+
+
         </div>
         
         <Card>

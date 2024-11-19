@@ -129,6 +129,8 @@ const checkInGuest = async (guestId: string) => {
             <div><strong>Telephone:</strong> {selectedGuest.telephoneNo}</div>
             <div><strong>Check-in:</strong> {formatDate(selectedGuest.checkIn)}</div>
             <div><strong>Check-out:</strong> {formatDate(selectedGuest.checkOut)}</div>
+            <div><strong>Payment-mode:</strong> {selectedGuest.modeOfPayment}</div>
+            <div><strong>Amount:</strong> Ksh {selectedGuest.paymentAmount}</div>
             <div><strong>Status:</strong> {selectedGuest.status}</div>
           </div>
           <button

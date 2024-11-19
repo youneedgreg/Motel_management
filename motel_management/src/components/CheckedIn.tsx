@@ -1,12 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { format } from "date-fns";
+import { useReactToPrint } from "react-to-print";
 
 // CheckedInGuestList Component
 const CheckedInGuestList = () => {
   const [guests, setGuests] = useState<any[]>([]);
   const [selectedGuest, setSelectedGuest] = useState<any | null>(null);
+
+  // Ref for the guest details section
+  const guestDetailsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Fetch guest data from your API
@@ -65,6 +69,11 @@ const CheckedInGuestList = () => {
     }
   };
 
+  // Print guest receipt function
+  const handlePrintReceipt = useReactToPrint({
+    contentRef: guestDetailsRef, // Pass the guest details ref here
+  });
+
   return (
     <div className="container mx-auto p-5">
       <h2 className="text-3xl font-semibold mb-5">Checked-in Guest List</h2>
@@ -121,7 +130,7 @@ const CheckedInGuestList = () => {
       {selectedGuest && (
         <div className="mt-6 p-6 border rounded-lg shadow-lg bg-yellow">
           <h3 className="text-2xl font-bold mb-4">Guest Details</h3>
-          <div className="space-y-4">
+          <div ref={guestDetailsRef} className="space-y-4">
             <div><strong>Name:</strong> {selectedGuest.fullName}</div>
             <div><strong>Email:</strong> {selectedGuest.email}</div>
             <div><strong>Room Number:</strong> {selectedGuest.room?.number}</div>
@@ -129,14 +138,24 @@ const CheckedInGuestList = () => {
             <div><strong>Telephone:</strong> {selectedGuest.telephoneNo}</div>
             <div><strong>Check-in:</strong> {formatDate(selectedGuest.checkIn)}</div>
             <div><strong>Check-out:</strong> {formatDate(selectedGuest.checkOut)}</div>
+            <div><strong>Payment Mode:</strong> {selectedGuest.modeOfPayment}</div>
+            <div><strong>Amount:</strong> Ksh {selectedGuest.paymentAmount}</div>
             <div><strong>Status:</strong> {selectedGuest.status}</div>
           </div>
-          <button
-            className="mt-4 py-2 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 border-2 border-yellow p-4"
-            onClick={() => setSelectedGuest(null)}
-          >
-            Close
-          </button>
+          <div className="mt-4 flex gap-4">
+            <button
+              className="py-2 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 border-2 border-yellow"
+              onClick={() => setSelectedGuest(null)}
+            >
+              Close
+            </button>
+            <button
+              className="py-2 px-4 bg-green-500 text-white rounded-lg hover:bg-green-700"
+              onClick={handlePrintReceipt}
+            >
+              Print Receipt
+            </button>
+          </div>
         </div>
       )}
     </div>

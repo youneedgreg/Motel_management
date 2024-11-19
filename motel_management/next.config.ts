@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* config options here */
+// next.config.ts
+const nextConfig = {
+  images: {
+    domains: ['sevendaysinn.co.ke'], // Add your domain here
+  },
 };
 
 export default nextConfig;

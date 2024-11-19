@@ -78,7 +78,7 @@ const CheckedOutGuestList = () => {
             <div><strong>Telephone:</strong> {selectedGuest.telephoneNo}</div>
             <div><strong>Check-in:</strong> {formatDate(selectedGuest.checkIn)}</div>
             <div><strong>Check-out:</strong> {formatDate(selectedGuest.checkOut)}</div>
-            <div><strong>Payment Amount:</strong> {selectedGuest.paymentAmount}</div>
+            <div><strong>Payment Amount:</strong> Ksh {selectedGuest.paymentAmount}</div>
             <div><strong>Mode of Payment:</strong> {selectedGuest.modeOfPayment}</div>
             <div><strong>Transaction/Receipt:</strong> {selectedGuest.transactionOrReceipt}</div>
             <div><strong>Status:</strong> {selectedGuest.status}</div>

@@ -115,23 +115,21 @@ const AddGuest = () => {
           <CardContent>
             <form onSubmit={handleAddGuest}>
               <div className="space-y-4">
+                {/* Other input fields */}
                 {[
                   { id: 'fullName', label: 'Full Name', type: 'text' },
                   { id: 'telephoneNo', label: 'Telephone Number', type: 'text' },
                   { id: 'email', label: 'Email', type: 'email' },
                   { id: 'idOrPassportNo', label: 'ID or Passport Number', type: 'text' },
-                  { id: 'paymentAmount', label: 'Payment Amount', type: 'number', step: '0.01' },
-                  { id: 'transactionOrReceipt', label: 'Transaction/Receipt Number', type: 'text' },
                   { id: 'checkIn', label: 'Check-In Date', type: 'date' },
                   { id: 'checkOut', label: 'Check-Out Date', type: 'date' },
-                ].map(({ id, label, type, step }) => (
+                ].map(({ id, label, type }) => (
                   <div className="space-y-2" key={id}>
                     <Label htmlFor={id}>{label}</Label>
                     <Input
                       id={id}
                       name={id}
                       type={type}
-                      step={step}
                       placeholder={`Enter ${label.toLowerCase()}`}
                       onBlur={handleBlur}
                     />
@@ -139,30 +137,44 @@ const AddGuest = () => {
                   </div>
                 ))}
 
-                {[
-                  { id: 'paymentMethod', label: 'Payment Method', options: ['physical', 'online'] },
-                  { id: 'roomId', label: 'Room', options: rooms.map(room => ({ value: room.id, label: `Room ${room.number}` })) },
-                  { id: 'modeOfPayment', label: 'Mode of Payment', options: ['mpesa', 'cash'] },
-                  { id: 'status', label: 'Status', options: ['booked', 'on-site', 'check-out'] },
-                ].map(({ id, label, options }) => (
-                  <div className="space-y-2" key={id}>
-                    <Label htmlFor={id}>{label}</Label>
-                    <select
-                      id={id}
-                      name={id}
-                      onBlur={handleBlur}
-                      className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded"
-                    >
-                      <option value="">Select {label}</option>
-                      {options.map((option) => (
-                        <option key={option.value || option} value={option.value || option}>
-                          {option.label || option}
-                        </option>
-                      ))}
-                    </select>
-                    {errors[id] && <p className="text-red-500 text-sm">{errors[id]}</p>}
-                  </div>
-                ))}
+                {/* Payment Fields Group */}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+                  {[
+                    { id: 'paymentMethod', label: 'Payment Method', options: ['physical', 'online'] },
+                    { id: 'paymentAmount', label: 'Payment Amount', type: 'number', step: '0.01' },
+                    { id: 'modeOfPayment', label: 'Mode of Payment', options: ['mpesa', 'cash'] },
+                    { id: 'transactionOrReceipt', label: 'Transaction/Receipt Number', type: 'text' },
+                  ].map(({ id, label, options, type, step }) => (
+                    <div className="space-y-2" key={id}>
+                      <Label htmlFor={id}>{label}</Label>
+                      {options ? (
+                        <select
+                          id={id}
+                          name={id}
+                          onBlur={handleBlur}
+                          className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded"
+                        >
+                          <option value="">Select {label}</option>
+                          {options.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <Input
+                          id={id}
+                          name={id}
+                          type={type}
+                          step={step}
+                          placeholder={`Enter ${label.toLowerCase()}`}
+                          onBlur={handleBlur}
+                        />
+                      )}
+                      {errors[id] && <p className="text-red-500 text-sm">{errors[id]}</p>}
+                    </div>
+                  ))}
+                </div>
 
                 <Button type="submit" className="w-full border border-white text-white hover:bg-white hover:text-gray-800 transition-colors duration-200" disabled={isLoading}>
                   {isLoading ? 'Loading...' : 'Add Guest'}

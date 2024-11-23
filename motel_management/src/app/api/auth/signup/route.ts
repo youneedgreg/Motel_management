@@ -7,13 +7,6 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { name, empId, email, phone, address, password, adminPassword } = body;
 
-    // Validate admin password
-    if (adminPassword !== 'goldmine') {
-      return NextResponse.json(
-        { error: 'Invalid admin password' },
-        { status: 400 }
-      );
-    }
 
     // Validate employee ID format
     if (!/^\d{6}$/.test(empId)) {

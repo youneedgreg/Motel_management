@@ -71,6 +71,20 @@ const CheckedOutGuestList = () => {
         <div className="mt-6 p-6 border rounded-lg shadow-lg bg-yellow">
           <h3 className="text-2xl font-bold mb-4">Guest Details</h3>
           <div className="space-y-4">
+          <div className="flex items-center mb-4">
+              <img
+                src="https://sevendaysinn.co.ke/wp-content/uploads/2024/10/7di-2-180x78.png"
+                alt="Logo"
+                className="w-32 h-auto mr-4"
+              />
+              <div>
+                <p className="text-lg font-bold">Seven Days Holiday Inn</p>
+                <p className="text-sm">Langata, Quincy Mall Area</p>
+                <p className="text-sm">P.O Box 22908 – 00505 Nairobi</p>
+                <p className="text-sm">Phone: +254 759 888 555</p>
+                <p className="text-sm">Email: reservations@sevendaysinn.co.ke</p>
+              </div>
+            </div>
             <div><strong>Name:</strong> {selectedGuest.fullName}</div>
             <div><strong>Email:</strong> {selectedGuest.email}</div>
             <div><strong>Room Number:</strong> {selectedGuest.room?.number}</div>

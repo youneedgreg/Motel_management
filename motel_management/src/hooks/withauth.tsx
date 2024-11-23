@@ -8,7 +8,7 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
     useEffect(() => {
       const token = localStorage.getItem('authToken');
       if (!token) {
-        router.push('/auth'); // Redirect to login if not authenticated
+        router.push('/'); // Redirect to login if not authenticated
       }
     }, [router]);
 

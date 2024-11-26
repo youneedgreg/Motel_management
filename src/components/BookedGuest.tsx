@@ -1,21 +1,46 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { format } from "date-fns";
+import Image from "next/image";
+import { useReactToPrint } from "react-to-print";
+
+// Define interfaces for type safety
+interface Room {
+  number: string;
+}
+
+interface Guest {
+  id: string;
+  fullName: string;
+  email: string;
+  telephoneNo: string;
+  room?: Room;
+  checkIn: string;
+  checkOut: string;
+  status: "booked" | "checked-in" | "checked-out";
+  paymentMethod: string;
+  modeOfPayment: string;
+  paymentAmount: number;
+  transactionOrReceipt: string;
+}
 
 // GuestList Component
 const BookedGuestList = () => {
-  const [guests, setGuests] = useState<any[]>([]);
-  const [selectedGuest, setSelectedGuest] = useState<any | null>(null);
+  const [guests, setGuests] = useState<Guest[]>([]);
+  const [selectedGuest, setSelectedGuest] = useState<Guest | null>(null);
+
+  // Ref for the guest details section
+  const guestDetailsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Fetch guest data from your API
     const fetchGuests = async () => {
       try {
         const response = await fetch("/api/guest/list");
-        const data = await response.json();
+        const data: Guest[] = await response.json();
         // Filter guests to only include those with status "booked"
-        const bookedGuests = data.filter((guest: any) => guest.status === "booked");
+        const bookedGuests = data.filter((guest) => guest.status === "booked");
         setGuests(bookedGuests);
       } catch (error) {
         console.error("Error fetching guest data:", error);
@@ -28,42 +53,46 @@ const BookedGuestList = () => {
   const formatDate = (date: string) => format(new Date(date), "MMM dd, yyyy");
 
   // Function to check in a guest using only guestId
-const checkInGuest = async (guestId: string) => {
-  try {
-    const response = await fetch(`/api/guest/check-in`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ guestId }),
-    });
+  const checkInGuest = async (guestId: string) => {
+    try {
+      const response = await fetch(`/api/guest/check-in`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ guestId }),
+      });
 
-    // Check for non-JSON response
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Server responded with an error:", errorText);
-      alert("Failed to check in guest. Please try again.");
-      return;
+      // Check for non-JSON response
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Server responded with an error:", errorText);
+        alert("Failed to check in guest. Please try again.");
+        return;
+      }
+
+      // Process JSON response
+      const result = await response.json();
+      if (result.error) {
+        alert(result.error);
+      } else {
+        setGuests((prevGuests) =>
+          prevGuests.map((guest) =>
+            guest.id === guestId ? { ...guest, status: "checked-in" } : guest
+          )
+        );
+        alert(result.message);
+      }
+    } catch (error) {
+      console.error("Error checking in guest:", error);
+      alert("An error occurred while checking in the guest.");
     }
+  };
 
-    // Process JSON response
-    const result = await response.json();
-    if (result.error) {
-      alert(result.error);
-    } else {
-      setGuests(prevGuests =>
-        prevGuests.map(guest =>
-          guest.id === guestId ? { ...guest, status: "checked-in" } : guest
-        )
-      );
-      alert(result.message);
-    }
-  } catch (error) {
-    console.error("Error checking in guest:", error);
-    alert("An error occurred while checking in the guest.");
-  }
-};
-
+  // Print guest details function
+  const handlePrintReceipt = useReactToPrint({
+    contentRef: guestDetailsRef, // Pass the guest details ref here
+  });
 
   return (
     <div className="container mx-auto p-5">
@@ -93,7 +122,7 @@ const checkInGuest = async (guestId: string) => {
               >
                 <td className="px-4 py-2">{index + 1}</td>
                 <td className="px-4 py-2">{guest.fullName}</td>
-                <td className="px-4 py-2">{guest.room?.number}</td>
+                <td className="px-4 py-2">{guest.room?.number || 'N/A'}</td>
                 <td className="px-4 py-2">{guest.telephoneNo}</td>
                 <td className="px-4 py-2">{formatDate(guest.checkIn)}</td>
                 <td className="px-4 py-2">{formatDate(guest.checkOut)}</td>
@@ -121,13 +150,18 @@ const checkInGuest = async (guestId: string) => {
       {selectedGuest && (
         <div className="mt-6 p-6 border rounded-lg shadow-lg bg-yellow">
           <h3 className="text-2xl font-bold mb-4">Guest Details</h3>
-          <div className="space-y-4">
-          <div className="flex items-center mb-4">
-              <img
-                src="https://sevendaysinn.co.ke/wp-content/uploads/2024/10/7di-2-180x78.png"
-                alt="Logo"
-                className="w-32 h-auto mr-4"
-              />
+          <div ref={guestDetailsRef} className="space-y-4">
+            <div className="flex items-center mb-4">
+              <div className="relative w-32 h-auto mr-4">
+                <Image
+                  src="https://sevendaysinn.co.ke/wp-content/uploads/2024/10/7di-2-180x78.png"
+                  alt="Seven Days Holiday Inn Logo"
+                  layout="responsive"
+                  width={180}
+                  height={78}
+                  objectFit="contain"
+                />
+              </div>
               <div>
                 <p className="text-lg font-bold">Seven Days Holiday Inn</p>
                 <p className="text-sm">Langata, Quincy Mall Area</p>
@@ -138,21 +172,30 @@ const checkInGuest = async (guestId: string) => {
             </div>
             <div><strong>Name:</strong> {selectedGuest.fullName}</div>
             <div><strong>Email:</strong> {selectedGuest.email}</div>
-            <div><strong>Room Number:</strong> {selectedGuest.room?.number}</div>
+            <div><strong>Room Number:</strong> {selectedGuest.room?.number || 'N/A'}</div>
             <div><strong>Payment Method:</strong> {selectedGuest.paymentMethod}</div>
             <div><strong>Telephone:</strong> {selectedGuest.telephoneNo}</div>
             <div><strong>Check-in:</strong> {formatDate(selectedGuest.checkIn)}</div>
             <div><strong>Check-out:</strong> {formatDate(selectedGuest.checkOut)}</div>
             <div><strong>Payment-mode:</strong> {selectedGuest.modeOfPayment}</div>
+            <div><strong>Transaction code/reciept no:</strong> {selectedGuest.transactionOrReceipt}</div>
             <div><strong>Amount:</strong> Ksh {selectedGuest.paymentAmount}</div>
             <div><strong>Status:</strong> {selectedGuest.status}</div>
           </div>
-          <button
-            className="mt-4 py-2 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 border-2 border-yellow"
-            onClick={() => setSelectedGuest(null)}
-          >
-            Close
-          </button>
+          <div className="mt-4 flex gap-4">
+            <button
+              className="py-2 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 border-2 border-yellow"
+              onClick={() => setSelectedGuest(null)}
+            >
+              Close
+            </button>
+            <button
+              className="py-2 px-4 bg-green-500 text-white rounded-lg hover:bg-green-700"
+              onClick={handlePrintReceipt}
+            >
+              Print Receipt
+            </button>
+          </div>
         </div>
       )}
     </div>

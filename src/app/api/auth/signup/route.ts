@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { name, empId, email, phone, address, password, adminPassword } = body;
+    const { name, empId, email, phone, address, password } = body;
 
     // Validate required fields
     if (!name || !empId || !email || !phone || !address || !password) {

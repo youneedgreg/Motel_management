@@ -3,11 +3,31 @@
 import { useEffect, useState, useRef } from "react";
 import { format } from "date-fns";
 import { useReactToPrint } from "react-to-print";
+import Image from "next/image";
 
-// CheckedInGuestList Component
+// Define interfaces for type safety
+interface Room {
+  number: string;
+}
+
+interface Guest {
+  id: string;
+  fullName: string;
+  email: string;
+  telephoneNo: string;
+  room?: Room;
+  checkIn: string;
+  checkOut: string;
+  status: "checked-in" | "checked-out";
+  paymentMethod: string;
+  modeOfPayment: string;
+  paymentAmount: number;
+  transactionOrReceipt: string;
+}
+
 const CheckedInGuestList = () => {
-  const [guests, setGuests] = useState<any[]>([]);
-  const [selectedGuest, setSelectedGuest] = useState<any | null>(null);
+  const [guests, setGuests] = useState<Guest[]>([]);
+  const [selectedGuest, setSelectedGuest] = useState<Guest | null>(null);
 
   // Ref for the guest details section
   const guestDetailsRef = useRef<HTMLDivElement>(null);
@@ -17,8 +37,8 @@ const CheckedInGuestList = () => {
     const fetchGuests = async () => {
       try {
         const response = await fetch("/api/guest/list");
-        const data = await response.json();
-        setGuests(data); // Assuming data is an array of guest objects
+        const data: Guest[] = await response.json();
+        setGuests(data);
       } catch (error) {
         console.error("Error fetching guest data:", error);
       }
@@ -131,11 +151,13 @@ const CheckedInGuestList = () => {
         <div className="mt-6 p-6 border rounded-lg shadow-lg bg-yellow">
           <h3 className="text-2xl font-bold mb-4">Guest Details</h3>
           <div ref={guestDetailsRef} className="space-y-4">
-          <div className="flex items-center mb-4">
-              <img
+            <div className="flex items-center mb-4">
+              <Image
                 src="https://sevendaysinn.co.ke/wp-content/uploads/2024/10/7di-2-180x78.png"
                 alt="Logo"
-                className="w-32 h-auto mr-4"
+                width={128}
+                height={55}
+                className="mr-4"
               />
               <div>
                 <p className="text-lg font-bold">Seven Days Holiday Inn</p>
@@ -153,6 +175,7 @@ const CheckedInGuestList = () => {
             <div><strong>Check-in:</strong> {formatDate(selectedGuest.checkIn)}</div>
             <div><strong>Check-out:</strong> {formatDate(selectedGuest.checkOut)}</div>
             <div><strong>Payment Mode:</strong> {selectedGuest.modeOfPayment}</div>
+            <div><strong>Transaction code/reciept no:</strong> {selectedGuest.transactionOrReceipt}</div>
             <div><strong>Amount:</strong> Ksh {selectedGuest.paymentAmount}</div>
             <div><strong>Status:</strong> {selectedGuest.status}</div>
           </div>

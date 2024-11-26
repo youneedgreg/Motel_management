@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import bcrypt from 'bcryptjs'
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import bcrypt from 'bcryptjs';
 
 export async function POST(request: Request) {
   try {
@@ -81,17 +81,16 @@ export async function POST(request: Request) {
     });
 
     // Prepare the result (excluding password)
-    const result = { ...user };
-    delete result.password;
+    const { password: _, ...result } = user;
 
     // Return the created user data
     return NextResponse.json(result);
   } catch (error) {
-    // Check if error is an object before logging
+    // Log the error message if available
     if (error instanceof Error) {
-      console.error('User creation error:', error.message);  // Log the error message
+      console.error('User creation error:', error.message);
     } else {
-      console.error('User creation error: Unknown error'); // In case the error isn't an instance of Error
+      console.error('User creation error: Unknown error');
     }
 
     // Return the error response

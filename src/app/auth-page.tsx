@@ -62,50 +62,53 @@ const AuthPage = () => {
   };
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
+  e.preventDefault();
+  setIsLoading(true);
 
-    const form = e.currentTarget;
-    const formData: SignupFormData = {
-      name: form.name.value,
-      empId: form.empId.value,
-      email: form.email.value,
-      phone: form.phone.value,
-      address: form.address.value,
-      password: form.password.value,
-      adminPassword: form.adminPassword.value,
-    };
+  const form = e.currentTarget;
 
-    if (validateSignup(formData)) {
-      try {
-        const response = await fetch("/api/auth/signup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || "Error signing up");
-        }
-
-        console.log("Signup successful", data);
-        setIsError(false);
-        form.reset();
-
-        toast({
-          title: "Successfully registered",
-          description: "You may now proceed to log in",
-          status: "success",
-        });
-      } catch (error: any) {
-        setErrorMessage(error.message || "Error signing up");
-        setIsError(true);
-      }
-    }
-    setIsLoading(false);
+  // Access form elements with proper casting
+  const formData: SignupFormData = {
+    name: (form.elements.namedItem("name") as HTMLInputElement).value,
+    empId: (form.elements.namedItem("empId") as HTMLInputElement).value,
+    email: (form.elements.namedItem("email") as HTMLInputElement).value,
+    phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+    address: (form.elements.namedItem("address") as HTMLInputElement).value,
+    password: (form.elements.namedItem("password") as HTMLInputElement).value,
+    adminPassword: (form.elements.namedItem("adminPassword") as HTMLInputElement).value,
   };
+
+  if (validateSignup(formData)) {
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Error signing up");
+      }
+
+      console.log("Signup successful", data);
+      setIsError(false);
+      form.reset();
+
+      toast({
+        title: "Successfully registered",
+        description: "You may now proceed to log in",
+        status: "success",
+      });
+    } catch (error: any) {
+      setErrorMessage(error.message || "Error signing up");
+      setIsError(true);
+    }
+  }
+  setIsLoading(false);
+};
+
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -1,4 +1,7 @@
 {
-  "/api/sales/route": "app/api/sales/route.js",
-  "/reports/page": "app/reports/page.js"
+  "/api/guest/add/route": "app/api/guest/add/route.js",
+  "/api/rooms/route": "app/api/rooms/route.js",
+  "/api/guest/list/route": "app/api/guest/list/route.js",
+  "/reports/page": "app/reports/page.js",
+  "/welcome/page": "app/welcome/page.js"
 }

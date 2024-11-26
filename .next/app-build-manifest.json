@@ -15,6 +15,26 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/api/sales/route.js"
+    ],
+    "/welcome/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/welcome/page.js"
+    ],
+    "/api/guest/list/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/guest/list/route.js"
+    ],
+    "/api/rooms/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/rooms/route.js"
+    ],
+    "/api/guest/add/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/guest/add/route.js"
     ]
   }
 }

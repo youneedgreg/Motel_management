@@ -2,19 +2,39 @@
 
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
+import Image from "next/image";
 
-// GuestList Component
+// Define interfaces for type safety
+interface Room {
+  number: string;
+}
+
+interface Guest {
+  id: string;
+  fullName: string;
+  email: string;
+  telephoneNo: string;
+  room?: Room;
+  checkIn: string;
+  checkOut: string;
+  status: "checked-in" | "checked-out";
+  paymentMethod: string;
+  modeOfPayment: string;
+  paymentAmount: number;
+  transactionOrReceipt?: string;
+}
+
 const CheckedOutGuestList = () => {
-  const [guests, setGuests] = useState<any[]>([]);
-  const [selectedGuest, setSelectedGuest] = useState<any | null>(null);
+  const [guests, setGuests] = useState<Guest[]>([]);
+  const [selectedGuest, setSelectedGuest] = useState<Guest | null>(null);
 
   useEffect(() => {
     // Fetch guest data from your API
     const fetchGuests = async () => {
       try {
         const response = await fetch("/api/guest/list");
-        const data = await response.json();
-        setGuests(data); // Assuming data is an array of guest objects
+        const data: Guest[] = await response.json();
+        setGuests(data); 
       } catch (error) {
         console.error("Error fetching guest data:", error);
       }
@@ -71,11 +91,13 @@ const CheckedOutGuestList = () => {
         <div className="mt-6 p-6 border rounded-lg shadow-lg bg-yellow">
           <h3 className="text-2xl font-bold mb-4">Guest Details</h3>
           <div className="space-y-4">
-          <div className="flex items-center mb-4">
-              <img
+            <div className="flex items-center mb-4">
+              <Image
                 src="https://sevendaysinn.co.ke/wp-content/uploads/2024/10/7di-2-180x78.png"
                 alt="Logo"
-                className="w-32 h-auto mr-4"
+                width={128}
+                height={55}
+                className="mr-4"
               />
               <div>
                 <p className="text-lg font-bold">Seven Days Holiday Inn</p>
@@ -98,7 +120,7 @@ const CheckedOutGuestList = () => {
             <div><strong>Status:</strong> {selectedGuest.status}</div>
           </div>
           <button
-            className="mt-4 py-2 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 border-2 border-yellow p-4"
+            className="mt-4 py-2 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 border-2 border-yellow"
             onClick={() => setSelectedGuest(null)}
           >
             Close

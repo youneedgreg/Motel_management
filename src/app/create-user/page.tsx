@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,7 @@ const CreateUserPage = () => {
   const { toast } = useToast();
   const router = useRouter();
 
-  const validateUser = (formData) => {
+  const validateUser = (formData: { name: string; empId: string; email: string; phone: string; address: string; password: string }) => {
     if (
       !formData.name ||
       !formData.empId ||
@@ -48,18 +48,19 @@ const CreateUserPage = () => {
     return true;
   };
 
-  const handleCreateUser = async (e) => {
+  const handleCreateUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const form = e.target;
+    const form = e.target as HTMLFormElement;
+
     const formData = {
-      name: form.name.value,
-      empId: form.empId.value,
-      email: form.email.value,
-      phone: form.phone.value,
-      address: form.address.value,
-      password: form.password.value,
+      name: (form.elements.namedItem("name") as HTMLInputElement).value,
+      empId: (form.elements.namedItem("empId") as HTMLInputElement).value,
+      email: (form.elements.namedItem("email") as HTMLInputElement).value,
+      phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+      address: (form.elements.namedItem("address") as HTMLInputElement).value,
+      password: (form.elements.namedItem("password") as HTMLInputElement).value,
     };
 
     if (validateUser(formData)) {

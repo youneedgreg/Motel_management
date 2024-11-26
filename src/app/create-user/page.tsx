@@ -51,6 +51,7 @@ const CreateUserPage = () => {
   const handleCreateUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
+    setIsError(false);
 
     const form = e.target as HTMLFormElement;
 
@@ -63,38 +64,43 @@ const CreateUserPage = () => {
       password: (form.elements.namedItem("password") as HTMLInputElement).value,
     };
 
-    if (validateUser(formData)) {
-      try {
+    try {
+      if (validateUser(formData)) {
         const response = await fetch("/api/auth/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
         });
-
+      
         const data = await response.json();
-
+      
         if (!response.ok) {
           throw new Error(data.error || "Error creating user");
         }
-
-        setIsError(false);
+      
         form.reset();
-
+      
         // Success toast
         toast({
           title: "User Created",
           description: `User ${data.name} has been created successfully!`,
           status: "success",
         });
-
+      
         // Optionally redirect or refresh page
         router.push("/");
-      } catch (error) {
-        setErrorMessage(error.message || "Error creating user");
-        setIsError(true);
       }
+    } catch (error) {
+      // Type guard to check if the error is an instance of Error
+      if (error instanceof Error) {
+        setErrorMessage(error.message || "Error creating user");
+      } else {
+        setErrorMessage("An unexpected error occurred");
+      }
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (

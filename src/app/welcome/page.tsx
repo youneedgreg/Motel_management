@@ -24,9 +24,20 @@ const WelcomePage: React.FC = () => {
     router.push('/reports');
   };
 
+  const goToAdmin = () => {
+    // Navigate to the reports page
+    router.push('/admin');
+  };
+
   return (
     <div className="min-h-screen bg-gray-800 text-white flex flex-col p-4">
       <div className="flex justify-end space-x-4">
+      <button
+          onClick={goToAdmin}
+          className="text-white p-2 hover:text-blue-500"
+        >
+          Admin
+        </button>
         <button
           onClick={goToReports}
           className="text-white p-2 hover:text-blue-500"

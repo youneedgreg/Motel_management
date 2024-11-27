@@ -10,7 +10,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 
-const AuthPage = () => {
+const Admin = () => {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -104,4 +104,4 @@ const AuthPage = () => {
   );
 };
 
-export default AuthPage;
+export default Admin;

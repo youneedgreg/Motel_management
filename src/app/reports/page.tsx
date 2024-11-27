@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useReactToPrint } from 'react-to-print';
-import withAuth from '@/hooks/withauth';
 import Image from 'next/image'; // Add this import for Next.js Image component
 
 // Define types to remove 'any'
@@ -132,4 +131,4 @@ const ReportPage: React.FC = () => {
   );
 };
 
-export default withAuth(ReportPage);
+export default ReportPage;

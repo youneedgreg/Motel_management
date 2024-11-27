@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
-import withAuth from "@/hooks/withauth";
 
 const CreateUserPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -166,4 +165,4 @@ const CreateUserPage = () => {
   );
 };
 
-export default withAuth(CreateUserPage);
+export default CreateUserPage;

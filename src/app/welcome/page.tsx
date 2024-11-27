@@ -9,7 +9,6 @@ import GuestList from '@/components/GuestList';
 import BookedGuestList from '@/components/BookedGuest';
 import CheckedInGuestList from '@/components/CheckedIn';
 import CheckedOutGuestList from '@/components/CheckedOut';
-import withAuth from '@/hooks/withauth';
 
 const WelcomePage: React.FC = () => {
   const router = useRouter();
@@ -52,4 +51,4 @@ const WelcomePage: React.FC = () => {
   );
 };
 
-export default withAuth(WelcomePage);
+export default WelcomePage;

@@ -29,6 +29,11 @@ const CreateUserPage = () => {
     router.push('/reports');
   };
 
+  const goToApp = () => {
+    // Navigate to the reports page
+    router.push('/welcome');
+  };
+
 
   const validateUser = (formData: { name: string; empId: string; email: string; phone: string; address: string; password: string }) => {
     if (
@@ -118,7 +123,7 @@ const CreateUserPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-800 text-white flex items-center justify-center p-4">
-      <header className="bg-gray-900 p-4 flex justify-between items-center shadow-md">
+      <header className="w-full bg-gray-900 p-4 flex justify-between items-center shadow-md fixed top-0 left-0 z-10">
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
         <div className="flex space-x-4">
           <Button
@@ -127,6 +132,13 @@ const CreateUserPage = () => {
             onClick={goToReports}
           >
             Reports
+          </Button>
+          <Button
+            variant="ghost"
+            className="text-white hover:text-blue-500"
+            onClick={goToApp}
+          >
+            Back to app
           </Button>
           <Button
             variant="ghost"
@@ -139,6 +151,7 @@ const CreateUserPage = () => {
         </div>
       </header>
       <div className="max-w-md w-full">
+        <p>welcome to the admin panel</p>
         <Card>
           <CardHeader>
             <CardTitle>Create New User</CardTitle>

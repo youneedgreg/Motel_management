@@ -53,7 +53,6 @@ const WelcomePage: React.FC = () => {
         <AddGuest/>
         <BookedGuestList/>
         <CheckedInGuestList/>
-        <GuestList/>
         <CheckedOutGuestList/>
       </div>
       <div className="flex flex-col items-center justify-center flex-grow">

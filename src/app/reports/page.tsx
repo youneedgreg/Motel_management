@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useReactToPrint } from 'react-to-print';
 import Image from 'next/image'; // Add this import for Next.js Image component
+import GuestList from '@/components/GuestList';
 
 // Define types to remove 'any'
 type ReportData = {
@@ -127,6 +128,7 @@ const ReportPage: React.FC = () => {
           <p>Loading...</p>
         )}
       </div>
+      <GuestList/>
     </div>
   );
 };

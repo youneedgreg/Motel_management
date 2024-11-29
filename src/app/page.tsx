@@ -10,7 +10,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 
-const Admin = () => {
+const AuthPage = () => {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -20,35 +20,40 @@ const Admin = () => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-
+  
     const form = e.currentTarget;
     const empId = form.loginId.value;
     const password = form.loginPassword.value;
-
+  
     if (!empId || !password) {
       setErrorMessage("Please enter both ID and password");
       setIsError(true);
       setIsLoading(false);
       return;
     }
-
+  
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ empId, password }),
       });
-
+  
       const data = await response.json();
-
+  
       if (!response.ok) {
         throw new Error(data.error || "Error logging in");
       }
-
+  
       console.log("Login successful", data);
+  
+      // Save the token to localStorage
+      localStorage.setItem("authToken", data.token);
+  
       setIsError(false);
       form.reset();
-
+  
+      // Redirect to welcome page
       router.push("/welcome");
     } catch (error: any) {
       setErrorMessage(error.message || "Error logging in");
@@ -56,7 +61,7 @@ const Admin = () => {
     }
     setIsLoading(false);
   };
-
+  
   return (
     <div className="min-h-screen bg-gray-800 text-white flex items-center justify-center p-4">
       <div className="max-w-md w-full">
@@ -104,4 +109,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default AuthPage;

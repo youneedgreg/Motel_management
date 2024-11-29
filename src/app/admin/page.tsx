@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import UsersTable from "@/components/UsersTable";
 import { FiLogOut } from "react-icons/fi";
+import withAuth from "@/hooks/withauth";
 
 const CreateUserPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -213,4 +214,4 @@ const CreateUserPage = () => {
   );
 };
 
-export default CreateUserPage;
+export default withAuth(CreateUserPage);

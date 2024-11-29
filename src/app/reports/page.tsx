@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useReactToPrint } from 'react-to-print';
 import Image from 'next/image'; // Add this import for Next.js Image component
 import GuestList from '@/components/GuestList';
+import withAuth from '@/hooks/withauth';
 
 // Define types to remove 'any'
 type ReportData = {
@@ -133,4 +134,4 @@ const ReportPage: React.FC = () => {
   );
 };
 
-export default ReportPage;
+export default withAuth(ReportPage);

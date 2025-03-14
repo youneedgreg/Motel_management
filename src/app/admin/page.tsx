@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -10,7 +10,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import UsersTable from "@/components/UsersTable";
 import { FiLogOut } from "react-icons/fi";
-import withAuth from "@/hooks/withauth";
 
 const CreateUserPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,31 +19,20 @@ const CreateUserPage = () => {
   const router = useRouter();
 
   const handleLogout = () => {
-    // Perform logout actions, such as clearing session or token
     localStorage.removeItem('authToken');
     router.push('/');
   };
 
   const goToReports = () => {
-    // Navigate to the reports page
     router.push('/reports');
   };
 
   const goToApp = () => {
-    // Navigate to the reports page
     router.push('/welcome');
   };
 
-
   const validateUser = (formData: { name: string; empId: string; email: string; phone: string; address: string; password: string }) => {
-    if (
-      !formData.name ||
-      !formData.empId ||
-      !formData.email ||
-      !formData.phone ||
-      !formData.address ||
-      !formData.password
-    ) {
+    if (!formData.name || !formData.empId || !formData.email || !formData.phone || !formData.address || !formData.password) {
       setErrorMessage("All fields are required");
       setIsError(true);
       return false;
@@ -90,27 +78,24 @@ const CreateUserPage = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
         });
-      
+
         const data = await response.json();
-      
+
         if (!response.ok) {
           throw new Error(data.error || "Error creating user");
         }
-      
+
         form.reset();
-      
-        // Success toast
+
         toast({
           title: "User Created",
           description: `User ${data.name} has been created successfully!`,
           status: "success",
         });
-      
-        // Optionally redirect or refresh page
+
         router.push("/");
       }
     } catch (error) {
-      // Type guard to check if the error is an instance of Error
       if (error instanceof Error) {
         setErrorMessage(error.message || "Error creating user");
       } else {
@@ -152,7 +137,7 @@ const CreateUserPage = () => {
         </div>
       </header>
       <div className="max-w-md w-full">
-        <p>welcome to the admin panel</p>
+        <p>Welcome to the admin panel</p>
         <Card>
           <CardHeader>
             <CardTitle>Create New User</CardTitle>
@@ -209,9 +194,9 @@ const CreateUserPage = () => {
           </CardContent>
         </Card>
       </div>
-      <UsersTable/>
+      <UsersTable />
     </div>
   );
 };
 
-export default withAuth(CreateUserPage);
+export default CreateUserPage;
